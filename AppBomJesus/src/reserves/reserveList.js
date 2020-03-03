@@ -10,11 +10,17 @@ import HeaderReserve from './HeaderReserve'
 export default class FlatListBasics extends Component {
       constructor(props){
         super(props)
-        this.state = {reserves:[],user:""}
+        this.state = {reserves:[]}
     }
 
     loaderReserve = () => {
-        fetch("http://10.19.1.31:8000/api/reserves")
+        fetch("http://10.19.1.31:8000/api/reserves",{
+            method: "GET",
+            headers: {
+                'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
+                'Content-Type': 'application/json'
+            },
+        })
         .then(res => res.json())
         .then( res => {
            // console.log(res.reservas[0].date)
@@ -24,18 +30,8 @@ export default class FlatListBasics extends Component {
         })
     }
 
-    getUser = (id) =>{
-        fetch(`http://10.19.1.31:8000/api/users/${id}`)
-        .then(res => res.json())
-        .then( res => {
-            this.setState({user:res.name})
-            console.log(res)
-        })
-    }
-
     showClass(classes){
         return classes.map( (item) => {
-             //console.log(item)
              return <ListItem><Text>{item}</Text></ListItem>
         })
      }
@@ -43,7 +39,7 @@ export default class FlatListBasics extends Component {
         return this.state.reserves.map((reserve) => {
             return  <Card>
             <CardItem header bordered>
-                <Text> {this.state.user}</Text>
+                <Text>{reserve.user.name} | {reserve.car.name}</Text>
             </CardItem>
             <CardItem bordered>
               <Body>
