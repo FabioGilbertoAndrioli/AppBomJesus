@@ -1,15 +1,16 @@
+import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import * as React from 'react';
-
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, YellowBox, StyleSheet} from 'react-native';
 
 import Reserva from './src/reserves/index';
 
+YellowBox.ignoreWarnings([
+  'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
+]);
 
 export default class App extends React.Component{
-
   render(){
      return(
       <View style={styles.container}>
