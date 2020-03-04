@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import { List, ListItem, Container, Card, CardItem, Text, Body, Content, Thumbnail } from "native-base";
 
 import {  format, parseISO } from "date-fns";
+
 import {StyleSheet} from 'react-native'
-import Moment from 'Moment'
+
+
 
 //components criados neste projeto.
 import HeaderReserve from './HeaderReserve'
@@ -26,7 +28,6 @@ export default class FlatListBasics extends Component {
             this.loaderReserve()
             this.render()
         });
-        console.log(format(parseISO('Y-m-d')))
     }
 
     notification = () => {
