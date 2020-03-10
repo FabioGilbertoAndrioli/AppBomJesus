@@ -4,16 +4,22 @@ import { List, ListItem, Container, Card, CardItem, Text, Body, Content, Thumbna
 
 import {  format, parseISO } from "date-fns";
 
+import { Notifications } from 'expo';
+
+import registerForPushNotificationsAsync from '../notification/registerForPushNotificationsAsync';
+
 import {StyleSheet} from 'react-native'
+
+
 
 
 
 //components criados neste projeto.
 import HeaderReserve from './HeaderReserve'
 
-import Notification from '../notification/ReserveNotification'
-
 import ServerClient from '../../server/serve'
+
+
 
 
 const echo = ServerClient
@@ -21,25 +27,42 @@ const echo = ServerClient
 export default class FlatListBasics extends Component {
       constructor(props){
         super(props)
-        this.state = {reserves:[]}
+       
+        this.state = {reserves:[], notification: {},}
         echo
         .channel('reserve-received')
         .listen('EventResponseReserve', () => {
             this.loaderReserve()
             this.render()
+            this.setState({notification: {data: "Seja bem vindo", origin:"Como vc esta"}})
+            registerForPushNotificationsAsync();
         });
     }
 
-    notification = () => {
-        Notification
-        .configure()
-        .localNotification({
-            message: "Testando a notificação"
-        });
+    componentDidMount (){
+        registerForPushNotificationsAsync();
+        this.loaderReserve()
+        this._notificationSubscription = Notifications.addListener(this._handleNotification);
+        
+        if (Platform.OS === 'android') {
+            Notifications.createChannelAndroidAsync('new_reserve', {
+                name: 'Fabio',
+                sound: true,
+                priority: 'max',
+                vibrate: [0, 250, 250, 250],
+            })
+        }
+
     }
+
+    _handleNotification = notification => {
+        
+      
+        this.setState({ notification: notification });
+      };
 
     loaderReserve = () => {
-        fetch("http://10.19.1.31/BJ/BomJesus/BomJesus/public/api/reserves",{
+        return fetch("http://10.19.1.31/BJ/BomJesus/BomJesus/public/api/reserves",{
             method: "GET",
             headers: {
                 'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
@@ -84,14 +107,12 @@ export default class FlatListBasics extends Component {
         return this.state.reserves !== nextState.reserves;
     }
 
-    componentDidMount (){
-        this.loaderReserve()
-        //this.notification()
-    }
     render() {
         return (
             <Container>
             <HeaderReserve></HeaderReserve>
+              <Text>Origin: {this.state.notification.origin}</Text>
+              <Text>Data: {JSON.stringify(this.state.notification.data)}</Text>
               <Content padder>
                 {this.showReseve()}
               </Content>

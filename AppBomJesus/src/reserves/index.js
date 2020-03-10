@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import axios from 'axios'
+import React from 'react';
+
+import { View, StyleSheet } from 'react-native';
 import ReserveList from './reserveList'
 
 

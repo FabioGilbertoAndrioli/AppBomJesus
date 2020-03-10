@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { View, YellowBox, StyleSheet} from 'react-native';
 
 import Reserva from './src/reserves/index';
+import AppContainer from './src/notification/AppContainer'
 
 YellowBox.ignoreWarnings([
   'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
@@ -14,7 +15,7 @@ export default class App extends React.Component{
   render(){
      return(
       <View style={styles.container}>
-          <Reserva></Reserva>
+         <Reserva></Reserva>
       </View>
      )
    }
