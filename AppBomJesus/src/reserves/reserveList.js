@@ -25,16 +25,15 @@ import ServerClient from '../../server/serve'
 const echo = ServerClient
 
 export default class FlatListBasics extends Component {
-      constructor(props){
+    constructor(props){
         super(props)
-       
+        
         this.state = {reserves:[], notification: {},}
         echo
         .channel('reserve-received')
         .listen('EventResponseReserve', () => {
             this.loaderReserve()
             this.render()
-            this.setState({notification: {data: "Seja bem vindo", origin:"Como vc esta"}})
             registerForPushNotificationsAsync();
         });
     }
@@ -56,13 +55,11 @@ export default class FlatListBasics extends Component {
     }
 
     _handleNotification = notification => {
-        
-      
         this.setState({ notification: notification });
       };
 
     loaderReserve = () => {
-        return fetch("http://10.19.1.31/BJ/BomJesus/BomJesus/public/api/reserves",{
+        return fetch("http://10.19.1.31/BJ/BomJesus/BomJesus/public/api/dashboard/reserves",{
             method: "GET",
             headers: {
                 'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
@@ -111,8 +108,6 @@ export default class FlatListBasics extends Component {
         return (
             <Container>
             <HeaderReserve></HeaderReserve>
-              <Text>Origin: {this.state.notification.origin}</Text>
-              <Text>Data: {JSON.stringify(this.state.notification.data)}</Text>
               <Content padder>
                 {this.showReseve()}
               </Content>
